@@ -9,25 +9,86 @@ format:
 engine: python3
 ---
 
-Dataset: https://www.kaggle.com/datasets/nazishjaveed/credit-card-application/data
+Dataset: https://www.kaggle.com/datasets/yogape/logistics-operations-database
 
-Here we import all needed packages and the CSV. 
+Here we import the data from Kaggle! 
 ```{python}
-import pandas as pd
-import numpy as np
-from scipy.stats import pointbiserialr
-from plotnine import *
-import matplotlib.pyplot as plt
-import statsmodels.formula.api as smf
-import statsmodels.api as sm
-from sklearn.preprocessing import StandardScaler, LabelEncoder
-from sklearn.linear_model import Lasso, LassoCV
-import statsmodels.formula.api as smf
-from sklearn.tree import DecisionTreeClassifier
-from sklearn import preprocessing
-from sklearn.metrics import (
-    accuracy_score, log_loss, roc_auc_score, confusion_matrix, classification_report, ConfusionMatrixDisplay, f1_score
-)
+import kagglehub
 
-df = pd.read_csv("C:/Users/shane/Downloads/DataWrangling_Final/Credit_Card_Applications.csv")
+# Download latest version
+path = kagglehub.dataset_download("yogape/logistics-operations-database")
+
+print("Path to dataset files:", path)
 ```
+
+```{python}
+import pandas as pd 
+import numpy as np
+from plotnine import *
+
+print(os.listdir(path))
+
+customers = pd.read_csv(f"{path}\customers.csv")
+drivers = pd.read_csv(f"{path}\drivers.csv")
+loads = pd.read_csv(f"{path}\loads.csv")
+```
+
+```{python}
+customers.head()
+customers.shape
+customers.describe(include = 'all')
+
+customers['customer_type'].value_counts()
+
+
+drivers.head()
+drivers.shape
+drivers.describe(include = 'all')
+
+drivers
+
+
+loads.head()
+loads.shape
+loads.describe(include = 'all')
+
+loads
+
+loads['customer_id'].value_counts()
+
+loads['totalloads'] = loads.groupby('customer_id')['load_id'].transform('nunique')
+
+loadseditted = loads.drop(columns = ['route_id', 'load_date', 'load_type', 'load_status', 'booking_type'])
+
+loadsgb = loadseditted.groupby('customer_id').agg({
+    'weight_lbs': 'sum', 
+    'pieces': 'sum',
+    'revenue': 'sum', 
+    'fuel_surcharge': 'sum',
+    'accessorial_charges': 'sum',
+    'totalloads': 'mean'
+})
+
+loadsgb = loadsgb.reset_index()
+```
+
+
+
+```{python}
+
+customer_info = pd.merge(customers, loadsgb, on = 'customer_id', how = 'left')
+
+customer_info['revenue_per_shipment'] = round(customer_info['revenue'] / customer_info['totalloads'], 2)
+```
+
+```{python}
+
+ggplot(data = customer_info) 
+geom_boxplot(, x = 'primary_freight_type', y = 'revenue_per_shipment')
+
+
+```
+
+
+
+
