@@ -83,9 +83,14 @@ customer_info['revenue_per_shipment'] = round(customer_info['revenue'] / custome
 
 ```{python}
 
-ggplot(data = customer_info) 
-geom_boxplot(, x = 'primary_freight_type', y = 'revenue_per_shipment')
 
+g1 = (
+    ggplot(customer_info, aes(x = 'primary_freight_type', y = 'revenue_per_shipment', fill = 'primary_freight_type')) 
+    + geom_boxplot()
+    + theme_bw()
+)
+
+g1
 
 ```
 
