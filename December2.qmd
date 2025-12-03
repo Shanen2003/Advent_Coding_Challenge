@@ -1,0 +1,33 @@
+---
+title: "December2"
+author: "Shane Bateman"
+format:
+  html:
+    toc: true
+    toc-location: left
+    self-contained: true
+engine: python3
+---
+
+Dataset: https://www.kaggle.com/datasets/nazishjaveed/credit-card-application/data
+
+Here we import all needed packages and the CSV. 
+```{python}
+import pandas as pd
+import numpy as np
+from scipy.stats import pointbiserialr
+from plotnine import *
+import matplotlib.pyplot as plt
+import statsmodels.formula.api as smf
+import statsmodels.api as sm
+from sklearn.preprocessing import StandardScaler, LabelEncoder
+from sklearn.linear_model import Lasso, LassoCV
+import statsmodels.formula.api as smf
+from sklearn.tree import DecisionTreeClassifier
+from sklearn import preprocessing
+from sklearn.metrics import (
+    accuracy_score, log_loss, roc_auc_score, confusion_matrix, classification_report, ConfusionMatrixDisplay, f1_score
+)
+
+df = pd.read_csv("C:/Users/shane/Downloads/DataWrangling_Final/Credit_Card_Applications.csv")
+```
