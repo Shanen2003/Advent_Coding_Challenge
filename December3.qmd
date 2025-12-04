@@ -1,0 +1,70 @@
+---
+title: "December 3"
+author: Shane Bateman
+format:
+  html:
+    toc: true
+    toc-location: left
+    self-contained: true
+engine: python3
+---
+
+
+
+```{python}
+import pandas as pd 
+```
+
+
+```{python}
+import kagglehub
+
+# Download latest version
+path = kagglehub.dataset_download("khushikyad001/ai-impact-on-jobs-2030")
+
+print("Path to dataset files:", path)
+```
+
+
+```{python}
+import pandas as pd 
+import numpy as np
+from plotnine import *
+
+print(os.listdir(path))
+
+df = pd.read_csv(f"{path}\AI_Impact_on_Jobs_2030.csv")
+```
+
+```{python}
+
+df.columns
+
+```
+
+```{python}
+
+df['Risk_Category'].value_counts()
+
+df['Risk_Category'] = df['Risk_Category'].map({'Low' : 1, 'Medium' : 2, 'High' : 3}).astype('float32')
+
+df['Risk_Categories'] = df['Risk_Category']
+
+df = df.drop(columns = ['Risk_Category'])
+
+length = (len(df)*.75)
+
+train = df.loc[:length]
+test = df.loc[length:]
+
+x_train = train.columns[:17]
+
+
+
+```
+
+
+
+
+
+
