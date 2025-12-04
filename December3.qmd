@@ -44,6 +44,18 @@ df.columns
 
 ```{python}
 
+g1 = (
+    ggplot(df, aes(x = 'Risk_Category', y = 'Years_Experience', fill = 'Education_Level')) 
+    + geom_boxplot()
+)
+
+g1
+
+```
+
+
+```{python}
+
 df['Risk_Category'].value_counts()
 
 df['Risk_Category'] = df['Risk_Category'].map({'Low' : 1, 'Medium' : 2, 'High' : 3}).astype('float32')
